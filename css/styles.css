@@ -60,12 +60,10 @@ body {
 
 .mini-display{
     font-size: 30px;
-    display: inline-block;
 }
 
 .display {
-    font-size: 90px;
-    display: inline-block;
+    font-size: 80px;
 }
 
 .buttons {
@@ -86,9 +84,10 @@ button {
     border: 0.1px solid black;
     border-radius: 5px;
     background-color: white;
+    font-size: 16px;
 }
 
-#zero {
+.zero {
     flex: 10.6 1 auto;
 }
 
