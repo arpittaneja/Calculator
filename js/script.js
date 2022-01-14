@@ -80,7 +80,7 @@ document.addEventListener("keydown", function (e) { //keydown event listener for
         case "Enter":
             equalClicked(e)
             break;
-        
+
         case "Delete":
             clearClicked(e)
             break;
@@ -100,11 +100,9 @@ function numbersClicked(e) {
     //checking if input is from keyboard or from clicking on the number buttons
     if (e.type === "click") {
         digit = e.target.id;
-        console.log(digit);
     }
     else if (e.type === "keydown") {
         digit = e.key;
-        console.log(digit);
     }
 
     //checking if the last element that came from clicking an operator is an operator
@@ -119,7 +117,6 @@ function numbersClicked(e) {
             miniDisplay.textContent = "";
         }
     }
-
 
     if (digit === ".") {
         if (decimalCounter === 0) {
@@ -137,17 +134,17 @@ function numbersClicked(e) {
         miniDisplay.textContent += digit;
     }
 
+
     //enable all operator buttons once number is clicked again
+    //if last element of minidisplay is a number
     if (numberButtons.indexOf(miniDisplay.textContent[miniDisplay.textContent.length - 1])) {
-        operatorButtons.forEach(button => button.addEventListener("click", operatorClicked));
+        enableOperators();
     }
 }
 
 //executes when clear button is clicked
 function clearClicked(e) {
-    // if (numberButtons.indexOf(miniDisplay.textContent[miniDisplay.textContent.length - 1])) {
-    //     operatorButtons.forEach(button => button.addEventListener("click", operatorClicked));
-    // }
+    //resets all variables to their initial values
     miniDisplay.textContent = "";
     display.textContent = "";
     firstOperand = "";
@@ -155,13 +152,9 @@ function clearClicked(e) {
     lastElement = null;
 }
 
-
+//executes when backspace button is clicked
 function backspaceClicked(e) {
-
-    // if (miniDisplay.textContent.length === 17) {
-    //     numberButtons.forEach(button => button.disabled = false);
-    // }
-
+    //if only one element is left then clear screen
     if (miniDisplay.textContent.length === 1) {
         clearClicked();
     }
@@ -170,59 +163,61 @@ function backspaceClicked(e) {
         if (miniDisplay.textContent[miniDisplay.textContent.length - 1] === ".") {
             decimalCounter = 0;
         }
+
+        //if last element of minidisplay is a number
         if (numberButtons.indexOf(miniDisplay.textContent[miniDisplay.textContent.length - 1])) {
-            operatorButtons.forEach(button => button.disabled = false);
+            enableOperators();
         }
+        //if last element of minidisplay is an operator
+        if (operatorButtons.indexOf(miniDisplay.textContent[miniDisplay.textContent.length - 1])) {
+            secondOperand = "";
+        }
+
         miniDisplay.textContent = miniDisplay.textContent.substring(0, miniDisplay.textContent.length - 1);
     }
 }
 
-
-
-
-
-
-
-
+//executes when an operator is clicked
 function operatorClicked(e) {
     decimalCounter = 0;
 
     if (miniDisplay.textContent === "") {
-        operatorButtons.forEach(button => button.removeEventListener("click", operatorClicked));
-        miniDisplay.textContent = "";
+        disableOperatorButtons();
     }
 
     else {
         //prevents the user from clicking two operator buttons simultaneously
+        //if last element of minidisplay is an operator
         if (operatorButtons.indexOf(miniDisplay.textContent[miniDisplay.textContent.length - 1])) {
-            operatorButtons.forEach(button => button.removeEventListener("click", operatorClicked));
+            disableOperatorButtons();
         }
 
-        //first case when operator is clicked first time
+        //calculates the firstOperand
+        //first case when operator is clicked first time, when seond operand is empty
         if (secondOperand == "") {
             firstOperand = miniDisplay.textContent;
-            console.log(firstOperand);
         }
-
-        if (secondOperand != "") {
+        //second case when second operand exists
+        else {
             equalClicked(firstOperand, secondOperand, operatorValue)
 
-            //zero wali condition
+            //updating the first operand
             firstOperand = display.textContent;
             if (firstOperand === "" || isNaN(firstOperand)) {
                 firstOperand = 0;
             }
             secondOperand = "";
         }
+
         if (e.type === "click") {
             signClicked = e.target.id;
-            console.log(signClicked);
         }
         else if (e.type === "keydown") {
             signClicked = e.key;
-            console.log(signClicked);
+            (signClicked);
         }
 
+        //updating the last element
         miniDisplay.textContent += signClicked;
         lastElement = signClicked;
     }
@@ -230,6 +225,7 @@ function operatorClicked(e) {
 
 
 function equalClicked(e) {
+    //if last element of miniDisplay is an operator
     if (miniDisplay.textContent[miniDisplay.textContent.length - 1] === "+" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "-" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "/" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "*" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "%") {
         equalButton.addEventListener("click", equalClicked);
     }
@@ -244,31 +240,45 @@ function equalize(firstOperand, secondOperand, operatorValue) {
         display.textContent = "";
     }
     let result = operate(parseFloat(firstOperand), parseFloat(secondOperand), lastElement);
+    //for division by zero case
     if (typeof result === "string") {
         display.textContent = result;
     }
     else {
+        //if length of result is greater than 10, then only prints forst 10 numbers
         if (toString(result).length > 10) {
-            console.log(result)
             let roundedResult = parseFloat(result.toString().substring(0, 10));
             display.textContent = roundedResult;
         }
+
         else {
             display.textContent = result;
         }
     }
 
+    //updating the first and second operand
     firstOperand = display.textContent;
     if (firstOperand === "" || isNaN(firstOperand)) {
         firstOperand = 0;
     }
     secondOperand = "";
 }
-
-function disableAllNumbers() {
-    numberButtons.forEach(number => number.disabled = true);
+//enables all operators
+function enableOperators() {
+    operatorButtons.forEach(button => button.addEventListener("click", operatorClicked));
 }
 
+//disables all numbers
+function disableAllNumbers() {
+    numberButtons.forEach(button => button.removeEventListener("click", operatorClicked));
+}
+
+//disables all operators
+function disableOperatorButtons() {
+    operatorButtons.forEach(button => button.removeEventListener("click", operatorClicked));
+}
+
+//arethmatic functions for calculations
 function add(a, b) {
     return parseFloat(a) + parseFloat(b);
 }
@@ -283,6 +293,7 @@ function multiply(a, b) {
 
 function divide(a, b) {
     if (b === 0) {
+        console.log("i aint gonna crash!")
         return "huh?"
     }
     return parseFloat(a) / parseFloat(b);
@@ -292,27 +303,11 @@ function mod(a, b) {
     return parseFloat(a) % parseFloat(b);
 }
 
+//operates the operands with the correect given operator
 function operate(a, b, sign) {
     if (sign == "+") return add(a, b);
     else if (sign == "-") return subtract(a, b);
     else if (sign == "*") return multiply(a, b);
     else if (sign == "/") return divide(a, b);
     else if (sign == "%") return mod(a, b);
-}
-
-//separate equals  sign from operators and call equate() function whenever operator sign is called again
-
-
-function evaluate(firstOperand, secondOperand, previousOperator) {
-    return operate(firstOperand, secondOperand, previousOperator);
-}
-
-function seriously() {
-    miniDisplay.textContent = "";
-    display.textContent = "";
-    firstOperand = 0;
-    secondOperand = 0;
-    previousOperator = null;
-    operatorValue = "";
-    operatorButtons.forEach(button => button.addEventListener("click", operatorClicked))
 }
