@@ -18,26 +18,32 @@ body {
 }
 
 .calculator {
-    height: 620px;
-    width: 450px;
+    border-radius: 24px;
+    height: 715px;
+    width: 490px;
     display: flex;
-    border: 1px solid black;
+    /* border: 1px solid black; */
+    padding: 20px;
     display: flex;
     flex-flow: column nowrap;
+    align-items: space-between;
+    background-color: rgb(63, 63, 63);
 }
 
 .screen-container {
-    border: 1px solid blue;
-    min-height: 140px;
+    /* border: 1px solid blue; */
+    height: 140px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
     gap: 8px 0;
+    border-radius: 20px;
+    background-color: grey;
 }
 
 .screen {
-    border: 2px solid black;
+    /* border: 2px solid black; */
     height: 75px;
     width: 420px;
     border-radius: 6px;
@@ -45,10 +51,11 @@ body {
     justify-content: flex-end;
     align-items: center;
     padding-right: 10px;
+    background-color: rgb(158,171,111);
 }
 
 .mini-screen {
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
     height: 40px;
     width: 420px;
     border-radius: 6px;
@@ -56,18 +63,21 @@ body {
     justify-content: flex-end;
     align-items: center;
     padding-right: 10px;
+    overflow: auto;
+    background-color: rgb(158,171,111);
+
 }
 
-.mini-display{
+.mini-display {
+    /* border: 1px solid blue; */
     min-height: 100%;
+    max-height: 200%;
     width: 400px;
     font-size: 15px;
     overflow-wrap: break-word;
     word-wrap: break-word;
     hyphens: auto;
-    text-align: right;
-
-
+    /* text-align: right; */
 }
 
 .display {
@@ -75,30 +85,78 @@ body {
 }
 
 .buttons {
-    border: 1px solid red;
+    /* border: 1px solid red; */
     display: flex;
     flex-flow: row wrap;
     margin: 0px;
-    height: 478px;
+    flex: 1 1 auto;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    border-radius: 20px;
+    background-color: rgb(0, 0, 0);
 }
 
 button {
-    width: 100px;
-    margin: 0px;
-    min-height: calc(476px/5);
-    padding: 0px;
-    height: calc(340px/5);
-    flex: 1 1 auto;
+    min-width: calc(466px/5);
+    max-width: calc(466px/5);
+    min-height: calc(466px/5);
+    max-height: calc(466px/5);
     border: 0.1px solid black;
-    border-radius: 5px;
-    background-color: white;
+    border: none;
+    border-radius: 150px;
+    background-color: rgb(112, 112, 112);
     font-size: 16px;
+    flex: 1 1 auto;
+    margin: 0 6px;
+    box-shadow:
+    5px 5px 0.3px rgba(206, 206, 206, 0.592),
+    5px 5px 5px rgba(209, 209, 209, 0.62)
+  ;
+  
+  
+font-size: 24px;
+  color: white;
+
+}
+
+.operator,
+.decimal,
+.equal {
+    border-radius: 100%;
+    background-color: rgb(233, 152, 3);
+}
+
+.zero{
+    border-radius: 90px;
 }
 
 .zero {
-    flex: 10.6 1 auto;
+    max-width: none;
+    flex: 19 1 auto;
 }
 
 button:hover {
     background-color: rgb(214, 214, 214);
+    transform: scale(1.04, 1.04);
+
+}
+
+.numbers:hover,
+.backspace:hover,
+.clear:hover{
+    background-color: rgb(131, 131, 131);
+}
+
+.operator:hover,
+.decimal:hover,
+.equal:hover {
+    background-color: rgb(255, 195, 85);
+}
+button:active {
+    box-shadow:
+  3px 3px 3px rgba(209, 209, 209, 0.592),
+  3px 3px 3px rgba(206, 206, 206, 0.62)
+;
+    transform: scale(0.98, .98);
 }

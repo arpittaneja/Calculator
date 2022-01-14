@@ -20,7 +20,6 @@ let equalButton = document.querySelector(".equal")
 equalButton.addEventListener("click", equalClicked);
 
 document.addEventListener("keydown", function (e) {
-    console.log(e)
     keyClicked = e.key;
     switch (keyClicked) {
         case "1":
