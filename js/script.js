@@ -1,25 +1,23 @@
 let display = document.querySelector(".display"); //selecting the main display
 
 let operatorButtons = Array.from(document.querySelectorAll(".operator")) //selecting the array of all operator buttons
-operatorButtons.forEach(button => button.addEventListener("click", operatorClicked));
+operatorButtons.forEach(button => button.addEventListener("click", operatorClicked)); //adding event listeners for all operator buttons
 
+let clearButton = document.querySelector(".clear"); //selecting the clear button
+clearButton.addEventListener("click", clearClicked); //adding event listener to clear button
 
-let clearButton = document.querySelector(".clear");
-clearButton.addEventListener("click", clearClicked);
-
-const backspaceButton = document.querySelector(".backspace");
-backspaceButton.addEventListener("click", backspaceClicked);
+const backspaceButton = document.querySelector(".backspace");//selecting the backspace button
+backspaceButton.addEventListener("click", backspaceClicked); // adding event listener to backspace button
 
 let miniDisplay = document.querySelector(".mini-display") //selecting the mini display
 
 let numberButtons = Array.from(document.querySelectorAll(".numbers")); //selecting the array of all number buttons
+numberButtons.forEach(number => number.addEventListener("click", numbersClicked)); //adding event listeners to all number buttons
 
-numberButtons.forEach(number => number.addEventListener("click", numbersClicked));
+let equalButton = document.querySelector(".equal") // selecting the mini
+equalButton.addEventListener("click", equalClicked); //adding event listeners to equal button
 
-let equalButton = document.querySelector(".equal")
-equalButton.addEventListener("click", equalClicked);
-
-document.addEventListener("keydown", function (e) {
+document.addEventListener("keydown", function (e) { //keydown event listener for keyboard support
     keyClicked = e.key;
     switch (keyClicked) {
         case "1":
@@ -89,9 +87,8 @@ document.addEventListener("keydown", function (e) {
     }
 })
 
-let firstOperand = 0;
+let firstOperand = "";
 let secondOperand = "";
-let previousOperator = null;
 let operatorValue = null;
 let lastElement = null;
 let decimalCounter = 0;
@@ -99,6 +96,8 @@ let signClicked = "";
 
 function numbersClicked(e) {
     let digit = "";
+
+    //checking if input is from keyboard or from clicking on the number buttons
     if (e.type === "click") {
         digit = e.target.id;
         console.log(digit);
@@ -108,23 +107,20 @@ function numbersClicked(e) {
         console.log(digit);
     }
 
-
+    //checking if the last element that came from clicking an operator is an operator
+    //if operator matches the last element, second operand is collected
     if (lastElement === "+" || lastElement === "-" || lastElement === "/" || lastElement === "%" || lastElement === "*") {
         secondOperand += digit;
-        console.log(secondOperand);
     }
 
+    //edge cases for zero and decimal 
     if (digit === "0") {
-        if (miniDisplay.textContent === "") {
+        if (miniDisplay.textContent === "" || miniDisplay.textContent === "0") {
             miniDisplay.textContent = "";
         }
     }
 
-    if (miniDisplay.textContent === "0") {
-        if (digit === "0") {
-            miniDisplay.textContent = "";
-        }
-    }
+
     if (digit === ".") {
         if (decimalCounter === 0) {
             if (miniDisplay.textContent === "0" || miniDisplay.textContent === "") {
@@ -138,12 +134,8 @@ function numbersClicked(e) {
         }
     }
     else {
-
         miniDisplay.textContent += digit;
     }
-
-
-
 
     //enable all operator buttons once number is clicked again
     if (numberButtons.indexOf(miniDisplay.textContent[miniDisplay.textContent.length - 1])) {
@@ -151,29 +143,14 @@ function numbersClicked(e) {
     }
 }
 
-
-
-// function decimalClicked(e) {
-
-//     if (decimalCounter === 0) {
-//         if (miniDisplay.textContent === "0") {
-//             miniDisplay.textContent = "0.";
-//         }
-//         else {
-//             miniDisplay.textContent += ".";
-//             decimalCounter++;
-//         }
-//     }
-// }
-
-
+//executes when clear button is clicked
 function clearClicked(e) {
-    if (numberButtons.indexOf(miniDisplay.textContent[miniDisplay.textContent.length - 1])) {
-        operatorButtons.forEach(button => button.disabled = false);
-    }
+    // if (numberButtons.indexOf(miniDisplay.textContent[miniDisplay.textContent.length - 1])) {
+    //     operatorButtons.forEach(button => button.addEventListener("click", operatorClicked));
+    // }
     miniDisplay.textContent = "";
     display.textContent = "";
-    firstOperand = 0;
+    firstOperand = "";
     secondOperand = "";
     lastElement = null;
 }
@@ -209,7 +186,6 @@ function backspaceClicked(e) {
 
 function operatorClicked(e) {
     decimalCounter = 0;
-    // console.log(previousOperator)
 
     if (miniDisplay.textContent === "") {
         operatorButtons.forEach(button => button.removeEventListener("click", operatorClicked));
@@ -307,7 +283,7 @@ function multiply(a, b) {
 
 function divide(a, b) {
     if (b === 0) {
-        return "seriously?"
+        return "huh?"
     }
     return parseFloat(a) / parseFloat(b);
 }
