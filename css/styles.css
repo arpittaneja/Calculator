@@ -59,7 +59,15 @@ body {
 }
 
 .mini-display{
-    font-size: 30px;
+    min-height: 100%;
+    width: 400px;
+    font-size: 15px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+    text-align: right;
+
+
 }
 
 .display {

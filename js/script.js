@@ -1,194 +1,315 @@
-let display = document.querySelector(".screen-container .screen .display")
+let display = document.querySelector(".display"); //selecting the main display
 
-let miniDisplay = document.querySelector(".screen-container .mini-screen")
-console.log(miniDisplay);
+let operatorButtons = Array.from(document.querySelectorAll(".operator")) //selecting the array of all operator buttons
+operatorButtons.forEach(button => button.addEventListener("click", operatorClicked));
 
-let numberButtons = Array.from(document.querySelectorAll(".initial"));
 
-let operators = Array.from(document.querySelectorAll(".operator"));
+let clearButton = document.querySelector(".clear");
+clearButton.addEventListener("click", clearClicked);
 
-numberButtons.forEach(number => number.addEventListener("click", numberClicked));
+const backspaceButton = document.querySelector(".backspace");
+backspaceButton.addEventListener("click", backspaceClicked);
 
-let decimal = document.querySelector(".decimal");
-console.log(decimal);
-let decimalCounter = 0;
-decimal.addEventListener("click", decimalClicked);
+let miniDisplay = document.querySelector(".mini-display") //selecting the mini display
+
+let numberButtons = Array.from(document.querySelectorAll(".numbers")); //selecting the array of all number buttons
+
+numberButtons.forEach(number => number.addEventListener("click", numbersClicked));
+
+let equalButton = document.querySelector(".equal")
+equalButton.addEventListener("click", equalClicked);
+
+document.addEventListener("keydown", function (e) {
+    console.log(e)
+    keyClicked = e.key;
+    switch (keyClicked) {
+        case "1":
+            numbersClicked(e)
+            break;
+        case "2":
+            numbersClicked(e)
+            break;
+        case "3":
+            numbersClicked(e)
+            break;
+        case "4":
+            numbersClicked(e)
+            break;
+        case "5":
+            numbersClicked(e)
+            break;
+        case "6":
+            numbersClicked(e)
+            break;
+        case "7":
+            numbersClicked(e)
+            break;
+        case "8":
+            numbersClicked(e)
+            break;
+        case "9":
+            numbersClicked(e)
+            break;
+        case "0":
+            numbersClicked(e)
+            break;
+        case ".":
+            numbersClicked(e)
+            break;
+        case "+":
+            operatorClicked(e)
+            break;
+
+        case "-":
+            operatorClicked(e)
+            break;
+
+        case "/":
+            operatorClicked(e)
+            break;
+
+        case "%":
+            operatorClicked(e)
+            break;
+
+        case "Backspace":
+            backspaceClicked(e)
+            break;
+
+        case "=":
+            equalClicked(e)
+            break;
+
+        case "Enter":
+            equalClicked(e)
+            break;
+        
+        case "Delete":
+            clearClicked(e)
+            break;
+    }
+})
+
 let firstOperand = 0;
-let secondOperand = 0;
+let secondOperand = "";
+let previousOperator = null;
+let operatorValue = null;
+let lastElement = null;
+let decimalCounter = 0;
+let signClicked = "";
 
-
-function numberClicked(e) {
-    digit = (e.target.id);
-
-    let lastElement = display.textContent[display.textContent.length - 1];
-    console.log(lastElement);
-    console.log(lastElement);
-    console.log(lastElement);
-    console.log(lastElement);
-    console.log(lastElement);
-    console.log(lastElement);
-    console.log(lastElement);
-
-    console.log(miniDisplay.textContent);
-    if ((miniDisplay.textContent === "") && (lastElement === "+" || lastElement === "-" || lastElement === "*" || lastElement === "/" || lastElement === "%")) {
-        miniDisplay.textContent = display.textContent;
-        clearDisplay(display);
+function numbersClicked(e) {
+    let digit = "";
+    if (e.type === "click") {
+        digit = e.target.id;
+        console.log(digit);
+    }
+    else if (e.type === "keydown") {
+        digit = e.key;
+        console.log(digit);
     }
 
 
+    if (lastElement === "+" || lastElement === "-" || lastElement === "/" || lastElement === "%" || lastElement === "*") {
+        secondOperand += digit;
+        console.log(secondOperand);
+    }
+
+    if (digit === "0") {
+        if (miniDisplay.textContent === "") {
+            miniDisplay.textContent = "";
+        }
+    }
+
+    if (miniDisplay.textContent === "0") {
+        if (digit === "0") {
+            miniDisplay.textContent = "";
+        }
+    }
+    if (digit === ".") {
+        if (decimalCounter === 0) {
+            if (miniDisplay.textContent === "0" || miniDisplay.textContent === "") {
+                miniDisplay.textContent = "0.";
+                decimalCounter++;
+            }
+            else {
+                miniDisplay.textContent += ".";
+                decimalCounter++;
+            }
+        }
+    }
+    else {
+
+        miniDisplay.textContent += digit;
+    }
+
+
+
+
+    //enable all operator buttons once number is clicked again
+    if (numberButtons.indexOf(miniDisplay.textContent[miniDisplay.textContent.length - 1])) {
+        operatorButtons.forEach(button => button.addEventListener("click", operatorClicked));
+    }
+}
+
+
+
+// function decimalClicked(e) {
+
+//     if (decimalCounter === 0) {
+//         if (miniDisplay.textContent === "0") {
+//             miniDisplay.textContent = "0.";
+//         }
+//         else {
+//             miniDisplay.textContent += ".";
+//             decimalCounter++;
+//         }
+//     }
+// }
+
+
+function clearClicked(e) {
+    if (numberButtons.indexOf(miniDisplay.textContent[miniDisplay.textContent.length - 1])) {
+        operatorButtons.forEach(button => button.disabled = false);
+    }
+    miniDisplay.textContent = "";
+    display.textContent = "";
+    firstOperand = 0;
+    secondOperand = "";
+    lastElement = null;
+}
+
+
+function backspaceClicked(e) {
+
+    // if (miniDisplay.textContent.length === 17) {
+    //     numberButtons.forEach(button => button.disabled = false);
+    // }
+
+    if (miniDisplay.textContent.length === 1) {
+        clearClicked();
+    }
+
+    else {
+        if (miniDisplay.textContent[miniDisplay.textContent.length - 1] === ".") {
+            decimalCounter = 0;
+        }
+        if (numberButtons.indexOf(miniDisplay.textContent[miniDisplay.textContent.length - 1])) {
+            operatorButtons.forEach(button => button.disabled = false);
+        }
+        miniDisplay.textContent = miniDisplay.textContent.substring(0, miniDisplay.textContent.length - 1);
+    }
+}
+
+
+
+
+
+
+
+
+function operatorClicked(e) {
+    decimalCounter = 0;
+    // console.log(previousOperator)
 
     if (miniDisplay.textContent === "") {
-        firstOperand = "";
+        operatorButtons.forEach(button => button.removeEventListener("click", operatorClicked));
+        miniDisplay.textContent = "";
+    }
+
+    else {
+        //prevents the user from clicking two operator buttons simultaneously
+        if (operatorButtons.indexOf(miniDisplay.textContent[miniDisplay.textContent.length - 1])) {
+            operatorButtons.forEach(button => button.removeEventListener("click", operatorClicked));
+        }
+
+        //first case when operator is clicked first time
+        if (secondOperand == "") {
+            firstOperand = miniDisplay.textContent;
+            console.log(firstOperand);
+        }
+
+        if (secondOperand != "") {
+            equalClicked(firstOperand, secondOperand, operatorValue)
+
+            //zero wali condition
+            firstOperand = display.textContent;
+            if (firstOperand === "" || isNaN(firstOperand)) {
+                firstOperand = 0;
+            }
+            secondOperand = "";
+        }
+        if (e.type === "click") {
+            signClicked = e.target.id;
+            console.log(signClicked);
+        }
+        else if (e.type === "keydown") {
+            signClicked = e.key;
+            console.log(signClicked);
+        }
+
+        miniDisplay.textContent += signClicked;
+        lastElement = signClicked;
+    }
+}
+
+
+function equalClicked(e) {
+    if (miniDisplay.textContent[miniDisplay.textContent.length - 1] === "+" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "-" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "/" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "*" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "%") {
+        equalButton.addEventListener("click", equalClicked);
     }
     else {
-        firstOperand = (miniDisplay.textContent);
+        equalize(firstOperand, secondOperand, operatorValue);
     }
-    console.log(firstOperand);
+}
 
 
-    if (digit === "delete") {
-        deleteClicked(display);
+function equalize(firstOperand, secondOperand, operatorValue) {
+    if (secondOperand == null) {
+        display.textContent = "";
     }
-
-    else if (digit === "clear") {
-        clearDisplay(display);
+    let result = operate(parseFloat(firstOperand), parseFloat(secondOperand), lastElement);
+    if (typeof result === "string") {
+        display.textContent = result;
     }
-
-    else if (display.textContent === "0") {
-        if (digit === "0") {
-            display.textContent = "0";
+    else {
+        if (toString(result).length > 10) {
+            console.log(result)
+            let roundedResult = parseFloat(result.toString().substring(0, 10));
+            display.textContent = roundedResult;
         }
-        // }
-        // else if (digit === "-") {
-        //     display.textContent = "0-";
-        // }
-        // else if (digit === "+") {
-        //     display.textContent = "0+";
-        // }
-        // else if (digit === "*") {
-        //     display.textContent = "0*";
-        // }
-        // else if (digit === "/") {
-        //     display.textContent = "0/";
-        // }
-        // else if (digit === "%") {
-        //     display.textContent = "0%";
-        // }
         else {
-            display.textContent = "";
-            display.textContent += digit;
+            display.textContent = result;
         }
     }
-    else {
-        display.textContent += digit;
+
+    firstOperand = display.textContent;
+    if (firstOperand === "" || isNaN(firstOperand)) {
+        firstOperand = 0;
     }
-    // miniDisplayLastElement = miniDisplay.textContent[]
-
-    if (display.textContent[0] === "+" || display.textContent[0] === "-" || display.textContent[0] === "/" || display.textContent[0] === "*" || display.textContent[0] === "%") {
-        secondOperand = display.textContent.slice(1);
-        console.log(secondOperand);
-    }
-
-    else if (miniDisplay.textContent.includes("+") || miniDisplay.textContent.includes("-") || miniDisplay.textContent.includes("*") || miniDisplay.textContent.includes("/") || miniDisplay.textContent.includes("%")) {
-        secondOperand = display.textContent;
-        console.log(secondOperand);
-    }
-
-
-
-    if (display.textContent !== "0" && display.textContent !== "") {
-        operators.forEach(operator => operator.addEventListener("click", operatorIsClicked));
-    }
-
-
-    // console.log(typeof display.textContent.length);
-
-    //  }
-    if (display.textContent.length < 9) {
-        enableDisabledButtons();
-    }
-    if (display.textContent.length === 9) {
-        displayAllButtonsExceptAcAndDelete();
-    }
+    secondOperand = "";
 }
 
-function decimalClicked() {
-
-    let lastElement = display.textContent[display.textContent.length - 1];
-    if (display.textContent === "") {
-        display.textContent = display.textContent;
-    }
-
-    else if (decimalCounter === 0) {
-        if ((miniDisplay.textContent === "") && (lastElement === "+" || lastElement === "-" || lastElement === "*" || lastElement === "/" || lastElement === "%")) {
-            miniDisplay.textContent = display.textContent;
-            clearDisplay(display);
-        }
-        
-        display.textContent += ".";
-        decimalCounter++;
-    }
+function disableAllNumbers() {
+    numberButtons.forEach(number => number.disabled = true);
 }
 
-function displayAllButtonsExceptAcAndDelete() {
-    for (button of numberButtons) {
-        if (button.id !== "clear" && button.id !== "delete") {
-            // button.disabled = true;
-            // console.log(button);
-            button.removeEventListener("click", numberClicked);
-        }
-    }
-}
-
-function enableDisabledButtons() {
-    for (button of numberButtons) {
-        if (button.id !== "clear" && button.id !== "delete") {
-            // button.disabled = true;
-            // console.log(button);
-            button.addEventListener("click", numberClicked);
-        }
-    }
-}
-
-function deleteClicked(display) {
-
-    if (display.textContent.length === 0) {
-        clearDisplay(display);
-    }
-
-    // display[display.length - 1] = "";
-    if (display.textContent[display.length - 1] == ".") {
-        decimalCounter == 0;
-    }
-
-    display.textContent = display.textContent.replace(display.textContent[display.textContent.length - 1], "")
-}
-
-
-function clearDisplay(display) {
-
-
-
-    display.textContent = "";
-    // console.log(operators);
-    operators.forEach(operator => operator.removeEventListener("click", operatorIsClicked));
-}
-// console.log(numberButtons)
 function add(a, b) {
     return parseFloat(a) + parseFloat(b);
 }
 
 function subtract(a, b) {
     return parseFloat(a) - parseFloat(b);
-
 }
 
 function multiply(a, b) {
     return parseFloat(a) * parseFloat(b);
-
 }
 
 function divide(a, b) {
+    if (b === 0) {
+        return "seriously?"
+    }
     return parseFloat(a) / parseFloat(b);
 }
 
@@ -204,96 +325,19 @@ function operate(a, b, sign) {
     else if (sign == "%") return mod(a, b);
 }
 
-
-function operatorIsClicked(e) {
-
-    // if (miniDisplay.textContent.includes("+") || miniDisplay.textContent.includes("-") || miniDisplay.textContent.includes("*") || miniDisplay.textContent.includes("/") || miniDisplay.textContent.includes("%") ) {
-    //     secondOperand = display.textContent;
-    //     console.log(secondOperand);
-    // }
-    decimalCounter = 0;
-    operatorValue = e.target.id;
-    let miniDisplayLastElement = miniDisplay.textContent.charAt(miniDisplay.textContent.length - 1);
-    console.log(miniDisplayLastElement);
+//separate equals  sign from operators and call equate() function whenever operator sign is called again
 
 
-    if (operatorValue === "=") {
-        if (miniDisplayLastElement === "+" || miniDisplayLastElement === "-" || miniDisplayLastElement === "/" || miniDisplayLastElement === "*" || miniDisplayLastElement === "%") {
-            console.log(firstOperand);
-            console.log(secondOperand);
-            let resultWhenEqualsSign = operate(firstOperand, secondOperand, miniDisplayLastElement);
-            console.log(resultWhenEqualsSign);
-            display.textContent = resultWhenEqualsSign;
-            miniDisplay.textContent = "";
-        }
+function evaluate(firstOperand, secondOperand, previousOperator) {
+    return operate(firstOperand, secondOperand, previousOperator);
+}
 
-        else if (display.textContent[0] === "+" || display.textContent[0] === "-" || display.textContent[0] === "/" || display.textContent[0] === "*" || display.textContent[0] === "%") {
-            let resultWhenEqualsSign = operate(firstOperand, secondOperand, display.textContent[0])
-            display.textContent = resultWhenEqualsSign;
-            miniDisplay.textContent = "";
-        }
-
-        // else if (typeof parseInt(display.textContent === "number")) {
-        //     let resultWhenEqualsSign = operate(firstOperand, secondOperand, display.textContent[0])
-        //     display.textContent = resultWhenEqualsSign;
-        //     miniDisplay.textContent = "";
-        // }
-
-        else if (miniDisplay.textContent === "") {
-
-        }
-    }
-    else {
-        display.textContent += operatorValue;
-    }
-
-
-    miniDisplayLastElement = miniDisplay.textContent.charAt(miniDisplay.textContent.length - 1);
-
-
-    if (miniDisplayLastElement === "+" || miniDisplayLastElement === "-" || miniDisplayLastElement === "/" || miniDisplayLastElement === "*" || miniDisplayLastElement === "%") {
-        let resultWhenRepeatedOperations = operate(firstOperand, secondOperand, miniDisplayLastElement);
-        miniDisplay.textContent = resultWhenRepeatedOperations;
-        if (resultWhenRepeatedOperations) {
-            miniDisplay.textContent = resultWhenRepeatedOperations;
-            // miniDisplay.textContent += operatorValue;
-            display.textContent = operatorValue;
-        }
-    }
-    else if (display.textContent[0] === "+" || display.textContent[0] === "-" || display.textContent[0] === "/" || display.textContent[0] === "*" || display.textContent[0] === "%") {
-        let resultWhenRepeatedOperations = operate(firstOperand, secondOperand, display.textContent[0]);
-        miniDisplay.textContent = resultWhenRepeatedOperations;
-        // miniDisplay.textContent += operatorValue;
-        display.textContent = operatorValue;
-    }
-
-
-
-
-    // let firstOperand = parseInt(display.textContent);
-    // console.log(firstOperand);
-
-    lastElement = display.textContent[display.textContent.length - 1];
-    console.log(lastElement);
-
-    // let demo = display.textContent.split("");
-
-    // for (let i = 0; i < demo.length; i++) {
-    //     if (demo[i] === "+" || demo[i] === "-" || demo[i] === "*" || demo[i] === "/" || demo[i] === "%") {
-    //         operators.forEach(operator => operator.removeEventListener("click", operatorIsClicked));
-    //     }
-    // }
-
-    if (lastElement === "+" || lastElement === "-" || lastElement === "*" || lastElement === "/" || lastElement === "%") {
-        operators.forEach(operator => operator.removeEventListener("click", operatorIsClicked));
-
-        if (display.textContent.length < 9) {
-            enableDisabledButtons();
-        }
-        if (display.textContent.length === 9) {
-            displayAllButtonsExceptAcAndDelete();
-        }
-    }
-
-
+function seriously() {
+    miniDisplay.textContent = "";
+    display.textContent = "";
+    firstOperand = 0;
+    secondOperand = 0;
+    previousOperator = null;
+    operatorValue = "";
+    operatorButtons.forEach(button => button.addEventListener("click", operatorClicked))
 }
