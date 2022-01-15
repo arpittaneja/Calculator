@@ -1,124 +1,27 @@
-let display = document.querySelector(".display"); //selecting the main display
+let display = document.querySelector(".display"); 
 
-let operatorButtons = Array.from(document.querySelectorAll(".operator")) //selecting the array of all operator buttons
-operatorButtons.forEach(button => button.addEventListener("click", operatorClicked)); //adding event listeners for all operator buttons
+let operatorButtons = Array.from(document.querySelectorAll(".operator"))
+operatorButtons.forEach(button => button.addEventListener("click", operatorClicked)); 
 
-let clearButton = document.querySelector(".clear"); //selecting the clear button
-clearButton.addEventListener("click", clearClicked); //adding event listener to clear button
+let clearButton = document.querySelector(".clear"); 
+clearButton.addEventListener("click", clearClicked); 
 
-const backspaceButton = document.querySelector(".backspace");//selecting the backspace button
-backspaceButton.addEventListener("click", backspaceClicked); // adding event listener to backspace button
+const backspaceButton = document.querySelector(".backspace");
+backspaceButton.addEventListener("click", backspaceClicked);
 
-let miniDisplay = document.querySelector(".mini-display") //selecting the mini display
+let miniDisplay = document.querySelector(".mini-display");
 
-let numberButtons = Array.from(document.querySelectorAll(".numbers")); //selecting the array of all number buttons
-numberButtons.forEach(number => number.addEventListener("click", numbersClicked)); //adding event listeners to all number buttons
+let numberButtons = Array.from(document.querySelectorAll(".numbers")); 
+numberButtons.forEach(number => number.addEventListener("click", numbersClicked));
 
-let equalButton = document.querySelector(".equal") // selecting the mini
-equalButton.addEventListener("click", equalClicked); //adding event listeners to equal button
+let equalButton = document.querySelector(".equal");
+equalButton.addEventListener("click", equalClicked); 
 
-document.addEventListener("keydown", numberFromKeyboard) //keydown event listener for keyboard support
-
-document.addEventListener("keydown", operatorFromKeyboard)
-
-document.addEventListener("keydown", clearFromKeyboard)
-document.addEventListener("keydown", backspaceFromKeyboard)
-document.addEventListener("keydown", equalFromKeyboard)
-
-function equalFromKeyboard(e) {
-    if (e.key === "=") {
-        equalClicked(e);
-    }
-}
-
-function backspaceFromKeyboard(e) {
-    if (e.key === "Backspace") {
-        backspaceClicked(e);
-    }
-}
-
-function clearFromKeyboard(e) {
-    if (e.key === "Delete") {
-        clearClicked(e);
-    }
-}
-
-function numberFromKeyboard(e) {
-    keyClicked = e.key;
-    switch (keyClicked) {
-        case "1":
-            numbersClicked(e)
-            break;
-        case "2":
-            numbersClicked(e)
-            break;
-        case "3":
-            numbersClicked(e)
-            break;
-        case "4":
-            numbersClicked(e)
-            break;
-        case "5":
-            numbersClicked(e)
-            break;
-        case "6":
-            numbersClicked(e)
-            break;
-        case "7":
-            numbersClicked(e)
-            break;
-        case "8":
-            numbersClicked(e)
-            break;
-        case "9":
-            numbersClicked(e)
-            break;
-        case "0":
-            numbersClicked(e)
-            break;
-        case ".":
-            numbersClicked(e)
-            break;
-
-        case "Backspace":
-            backspaceClicked(e)
-            break;
-
-        case "=":
-            equalClicked(e)
-            break;
-
-        case "Enter":
-            equalClicked(e)
-            break;
-    }
-}
-
-
-function operatorFromKeyboard(e) {
-    keyClicked = e.key;
-    switch (keyClicked) {
-        case "+":
-            operatorClicked(e)
-            break;
-
-        case "-":
-            operatorClicked(e)
-            break;
-
-        case "*":
-            operatorClicked(e)
-            break;
-
-        case "/":
-            operatorClicked(e)
-            break;
-
-        case "%":
-            operatorClicked(e)
-            break;
-    }
-}
+document.addEventListener("keydown", numberFromKeyboard);
+document.addEventListener("keydown", operatorFromKeyboard);
+document.addEventListener("keydown", clearFromKeyboard);
+document.addEventListener("keydown", backspaceFromKeyboard);
+document.addEventListener("keydown", equalFromKeyboard);
 
 //initializing all operands and operators
 let firstOperand = "";
@@ -259,7 +162,106 @@ function operatorClicked(e) {
     }
 }
 
+//executes when equal key is pressed from the keyboard
+function equalFromKeyboard(e) {
+    if (e.key === "=") {
+        equalClicked(e);
+    }
+}
 
+//executes when backspace key is pressed from the keyboard
+function backspaceFromKeyboard(e) {
+    if (e.key === "Backspace") {
+        backspaceClicked(e);
+    }
+}
+
+//executes when clear key is pressed from the keyboard
+function clearFromKeyboard(e) {
+    if (e.key === "Delete") {
+        clearClicked(e);
+    }
+}
+
+//executes when any number key is pressed from the keyboard
+function numberFromKeyboard(e) {
+    keyClicked = e.key;
+    switch (keyClicked) {
+        case "1":
+            numbersClicked(e)
+            break;
+        case "2":
+            numbersClicked(e)
+            break;
+        case "3":
+            numbersClicked(e)
+            break;
+        case "4":
+            numbersClicked(e)
+            break;
+        case "5":
+            numbersClicked(e)
+            break;
+        case "6":
+            numbersClicked(e)
+            break;
+        case "7":
+            numbersClicked(e)
+            break;
+        case "8":
+            numbersClicked(e)
+            break;
+        case "9":
+            numbersClicked(e)
+            break;
+        case "0":
+            numbersClicked(e)
+            break;
+        case ".":
+            numbersClicked(e)
+            break;
+
+        case "Backspace":
+            backspaceClicked(e)
+            break;
+
+        case "=":
+            equalClicked(e)
+            break;
+
+        case "Enter":
+            equalClicked(e)
+            break;
+    }
+}
+
+//executes when any operator key is pressed from the keyboard
+function operatorFromKeyboard(e) {
+    keyClicked = e.key;
+    switch (keyClicked) {
+        case "+":
+            operatorClicked(e)
+            break;
+
+        case "-":
+            operatorClicked(e)
+            break;
+
+        case "*":
+            operatorClicked(e)
+            break;
+
+        case "/":
+            operatorClicked(e)
+            break;
+
+        case "%":
+            operatorClicked(e)
+            break;
+    }
+}
+
+//executes when equal key or button is pressed
 function equalClicked(e) {
     if (miniDisplay.textContent === "") {
         miniDisplay.textContent = "";
@@ -319,12 +321,6 @@ function enableOperators() {
     operatorButtons.forEach(button => button.addEventListener("click", operatorClicked));
     document.addEventListener("keydown", operatorFromKeyboard);
 }
-
-// //disables all numbers
-// function disableAllNumbers() {
-//     numberButtons.forEach(button => button.removeEventListener("click", operatorClicked));
-//     document.addEventListener("keydown", numberFromKeyboard);
-// }
 
 //disables all operators
 function disableOperatorButtons() {
