@@ -33,6 +33,7 @@ body {
 }
 
 .screen-container {
+    min-width: 450px;
     height: 140px;
     display: flex;
     justify-content: center;
@@ -86,6 +87,7 @@ body {
 .buttons {
     display: flex;
     flex-flow: row wrap;
+    min-width: 450px;
     margin: 0px;
     flex: 1 1 auto;
     justify-content: center;
