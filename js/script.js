@@ -18,11 +18,30 @@ let equalButton = document.querySelector(".equal") // selecting the mini
 equalButton.addEventListener("click", equalClicked); //adding event listeners to equal button
 
 document.addEventListener("keydown", numberFromKeyboard) //keydown event listener for keyboard support
-    
+
 document.addEventListener("keydown", operatorFromKeyboard)
 
-// document.addEventListener("keydown", operatorFromKeyboard)
+document.addEventListener("keydown", clearFromKeyboard)
+document.addEventListener("keydown", backspaceFromKeyboard)
+document.addEventListener("keydown", equalFromKeyboard)
 
+function equalFromKeyboard(e) {
+    if (e.key === "=") {
+        equalClicked(e);
+    }
+}
+
+function backspaceFromKeyboard(e) {
+    if (e.key === "Backspace") {
+        backspaceClicked(e);
+    }
+}
+
+function clearFromKeyboard(e) {
+    if (e.key === "Delete") {
+        clearClicked(e);
+    }
+}
 
 function numberFromKeyboard(e) {
     keyClicked = e.key;
@@ -72,14 +91,10 @@ function numberFromKeyboard(e) {
         case "Enter":
             equalClicked(e)
             break;
-
-        case "Delete":
-            clearClicked(e)
-            break;
     }
 }
 
-    
+
 function operatorFromKeyboard(e) {
     keyClicked = e.key;
     switch (keyClicked) {
@@ -94,7 +109,7 @@ function operatorFromKeyboard(e) {
         case "*":
             operatorClicked(e)
             break;
-        
+
         case "/":
             operatorClicked(e)
             break;
@@ -251,20 +266,21 @@ function equalClicked(e) {
     }
 
     else if (lastElement === null) {
-        display.textContent = miniDisplay.textContent;       
-    }
-        
-    else {
-        
-    //if last element of miniDisplay is an operator
-    if (miniDisplay.textContent[miniDisplay.textContent.length - 1] === "+" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "-" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "/" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "*" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "%") {
-        equalButton.addEventListener("click", equalClicked);
-    }
-    else {
-        equalize(firstOperand, secondOperand, operatorValue);
-    }
+        display.textContent = miniDisplay.textContent;
     }
 
+    else {
+
+        //if last element of miniDisplay is an operator
+        if (miniDisplay.textContent[miniDisplay.textContent.length - 1] === "+" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "-" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "/" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "*" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "%") {
+            equalButton.addEventListener("click", equalClicked);
+            document.addEventListener("keydown", equalFromKeyboard)
+
+        }
+        else {
+            equalize(firstOperand, secondOperand, operatorValue);
+        }
+    }
 }
 
 
@@ -296,10 +312,12 @@ function equalize(firstOperand, secondOperand, operatorValue) {
     }
     secondOperand = "";
 }
+
+
 //enables all operators
 function enableOperators() {
     operatorButtons.forEach(button => button.addEventListener("click", operatorClicked));
-    document.removeEventListener("keydown", operatorFromKeyboard);
+    document.addEventListener("keydown", operatorFromKeyboard);
 }
 
 // //disables all numbers
