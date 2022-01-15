@@ -87,6 +87,7 @@ document.addEventListener("keydown", function (e) { //keydown event listener for
     }
 })
 
+//initializing all operands and operators
 let firstOperand = "";
 let secondOperand = "";
 let operatorValue = null;
@@ -94,6 +95,8 @@ let lastElement = null;
 let decimalCounter = 0;
 let signClicked = "";
 
+
+//exectues when any number is clicked
 function numbersClicked(e) {
     let digit = "";
 
