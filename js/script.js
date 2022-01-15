@@ -17,7 +17,14 @@ numberButtons.forEach(number => number.addEventListener("click", numbersClicked)
 let equalButton = document.querySelector(".equal") // selecting the mini
 equalButton.addEventListener("click", equalClicked); //adding event listeners to equal button
 
-document.addEventListener("keydown", function (e) { //keydown event listener for keyboard support
+document.addEventListener("keydown", numberFromKeyboard) //keydown event listener for keyboard support
+    
+document.addEventListener("keydown", operatorFromKeyboard)
+
+// document.addEventListener("keydown", operatorFromKeyboard)
+
+
+function numberFromKeyboard(e) {
     keyClicked = e.key;
     switch (keyClicked) {
         case "1":
@@ -53,6 +60,29 @@ document.addEventListener("keydown", function (e) { //keydown event listener for
         case ".":
             numbersClicked(e)
             break;
+
+        case "Backspace":
+            backspaceClicked(e)
+            break;
+
+        case "=":
+            equalClicked(e)
+            break;
+
+        case "Enter":
+            equalClicked(e)
+            break;
+
+        case "Delete":
+            clearClicked(e)
+            break;
+    }
+}
+
+    
+function operatorFromKeyboard(e) {
+    keyClicked = e.key;
+    switch (keyClicked) {
         case "+":
             operatorClicked(e)
             break;
@@ -72,24 +102,8 @@ document.addEventListener("keydown", function (e) { //keydown event listener for
         case "%":
             operatorClicked(e)
             break;
-
-        case "Backspace":
-            backspaceClicked(e)
-            break;
-
-        case "=":
-            equalClicked(e)
-            break;
-
-        case "Enter":
-            equalClicked(e)
-            break;
-
-        case "Delete":
-            clearClicked(e)
-            break;
     }
-})
+}
 
 //initializing all operands and operators
 let firstOperand = "";
@@ -232,6 +246,16 @@ function operatorClicked(e) {
 
 
 function equalClicked(e) {
+    if (miniDisplay.textContent === "") {
+        miniDisplay.textContent = "";
+    }
+
+    else if (lastElement === null) {
+        display.textContent = miniDisplay.textContent;       
+    }
+        
+    else {
+        
     //if last element of miniDisplay is an operator
     if (miniDisplay.textContent[miniDisplay.textContent.length - 1] === "+" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "-" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "/" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "*" || miniDisplay.textContent[miniDisplay.textContent.length - 1] === "%") {
         equalButton.addEventListener("click", equalClicked);
@@ -239,6 +263,8 @@ function equalClicked(e) {
     else {
         equalize(firstOperand, secondOperand, operatorValue);
     }
+    }
+
 }
 
 
@@ -273,16 +299,19 @@ function equalize(firstOperand, secondOperand, operatorValue) {
 //enables all operators
 function enableOperators() {
     operatorButtons.forEach(button => button.addEventListener("click", operatorClicked));
+    document.removeEventListener("keydown", operatorFromKeyboard);
 }
 
-//disables all numbers
-function disableAllNumbers() {
-    numberButtons.forEach(button => button.removeEventListener("click", operatorClicked));
-}
+// //disables all numbers
+// function disableAllNumbers() {
+//     numberButtons.forEach(button => button.removeEventListener("click", operatorClicked));
+//     document.addEventListener("keydown", numberFromKeyboard);
+// }
 
 //disables all operators
 function disableOperatorButtons() {
     operatorButtons.forEach(button => button.removeEventListener("click", operatorClicked));
+    document.removeEventListener("keydown", operatorFromKeyboard);
 }
 
 //arethmatic functions for calculations
