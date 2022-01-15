@@ -61,6 +61,10 @@ document.addEventListener("keydown", function (e) { //keydown event listener for
             operatorClicked(e)
             break;
 
+        case "*":
+            operatorClicked(e)
+            break;
+        
         case "/":
             operatorClicked(e)
             break;
